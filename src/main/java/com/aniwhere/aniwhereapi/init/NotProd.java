@@ -39,7 +39,7 @@ public class NotProd {
                     .delFlag(false)
                     .build();
 
-            member.addRole(MemberRole.ADMIN);
+            member.addRole(MemberRole.ADULT_USER);
 
             Member savedMember = memberRepository.save(member);
 

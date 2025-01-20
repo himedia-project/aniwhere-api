@@ -19,12 +19,12 @@ import java.util.List;
 public class Member extends BaseEntity {
 
     @Id
-    private String email;
+    private String email; //username
     private String name;
-
+    private Long birthday;
     private String password;
-
     private String phone;
+    private MemberRole role;
 
     private boolean delFlag;
 
