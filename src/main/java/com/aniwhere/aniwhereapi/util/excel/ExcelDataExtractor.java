@@ -26,6 +26,10 @@ public abstract class ExcelDataExtractor<T> {
             try {
                 index++;
                 Row row = rowIterator.next();
+                // 빈 행인 경우 건너뛰기
+                if (isEmptyRow(row)) {
+                    continue;
+                }
                 list.add(map(row));
             } catch (IllegalStateException e) {
                 exceptionMessage.append(index).append("행: ").append("값의 타입이 맞지않습니다.\n");
@@ -44,5 +48,18 @@ public abstract class ExcelDataExtractor<T> {
     }
 
     abstract protected T map(Row row);
+
+    // 행이 비어있는지 확인하는 메소드
+    private boolean isEmptyRow(Row row) {
+        if (row == null) {
+            return true;
+        }
+        for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
+            if (row.getCell(i) != null && !row.getCell(i).toString().trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

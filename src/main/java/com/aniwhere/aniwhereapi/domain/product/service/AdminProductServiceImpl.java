@@ -1,0 +1,96 @@
+package com.aniwhere.aniwhereapi.domain.product.service;
+
+
+import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.entity.Category;
+import com.aniwhere.aniwhereapi.domain.product.entity.Product;
+import com.aniwhere.aniwhereapi.domain.product.entity.ProductTag;
+import com.aniwhere.aniwhereapi.domain.product.entity.Tag;
+import com.aniwhere.aniwhereapi.domain.product.repository.CategoryRepository;
+import com.aniwhere.aniwhereapi.domain.product.repository.ProductRepository;
+import com.aniwhere.aniwhereapi.domain.product.repository.ProductTagRepository;
+import com.aniwhere.aniwhereapi.domain.product.repository.TagRepository;
+import com.aniwhere.aniwhereapi.util.file.CustomFileUtil;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+
+
+@Slf4j
+@Transactional
+@Service
+@RequiredArgsConstructor
+public class AdminProductServiceImpl implements AdminProductService {
+
+    private final CustomFileUtil fileUtil;
+
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
+    private final ProductTagRepository productTagRepository;
+
+
+    @Override
+    public Long register(ProductDTO dto) {
+
+        // 파일 업로드 처리
+        if(dto.getFiles() != null || !dto.getFiles().isEmpty()) {
+            List<MultipartFile> files = dto.getFiles();
+            List<String> uploadFileNames = fileUtil.uploadS3Files(files);
+            log.info("uploadFileNames: {}", uploadFileNames);
+            dto.setUploadFileNames(uploadFileNames);
+        }
+
+        // excel 업로드 imagePathList 있을시 s3 업로드
+        if (dto.getImagePathList() != null) {
+            log.info("excel 업로드 이미지 파일 존재! dto.getImagePathList(): {}", dto.getImagePathList());
+            dto.setUploadFileNames(fileUtil.uploadImagePathS3Files(dto.getImagePathList()));
+        }
+
+        // 카테고리
+        Category category = this.getCategory(dto.getCategoryId());
+
+        // 실제 저장 처리
+        Product result = productRepository.save(this.dtoToEntity(dto, category));
+        log.info("product result: {}", result);
+
+        // 태그 처리
+        if(dto.getTagStrList() != null) {
+            dto.getTagStrList().forEach(tag -> {
+                log.info("tag: {}", tag);
+                Tag savedTag = tagRepository.save(Tag.from(tag));
+                productTagRepository.save(ProductTag.from(savedTag, result));
+            });
+        }
+
+        return result.getId();
+    }
+
+
+
+    /**
+     * Entity 찾기
+     * @param id 엔티티 id
+     * @return DTO
+     */
+    private Product getEntity(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 존재하지 않습니다. id: " + id));
+    }
+
+    /**
+     * 상품 카테고리 찾기
+     * @param categoryId 카테고리 id
+     * @return 카테고리
+     */
+    private Category getCategory(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 카테고리가 존재하지 않습니다. id: " + categoryId));
+    }
+}

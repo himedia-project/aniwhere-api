@@ -53,14 +53,12 @@ public class SecurityConfig {
                 authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/api/member/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/product/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/content/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/test/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/chat/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/crawl/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/category/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/heart/**")).permitAll()
-                        // api path에 admin 포함되면 ROLE_ADMIN 권한이 있어야 접근 가능,
-                        .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
         );
 
