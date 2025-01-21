@@ -49,7 +49,7 @@ public class MemberController {
         CookieUtil.setTokenCookie(resposnse,"refreshToken",refreshToken,jwtProps.getRefreshTokenExpirationPeriod());
 
         LoginResponseDTO loginResponseDTO = LoginResponseDTO.builder()
-                .email(loginClaims.get("emeil").toString())
+                .email(loginClaims.get("email").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
                 .accessToken(accessToken)
