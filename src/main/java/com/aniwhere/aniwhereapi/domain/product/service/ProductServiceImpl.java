@@ -65,4 +65,11 @@ public class ProductServiceImpl implements ProductService {
         return productDTOList;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProductDTO> list(ProductDTO productDTO) {
+        return productRepository.findByDTO(productDTO).stream()
+                .map(adminProductService::entityToDTO).collect(Collectors.toList());
+    }
+
 }

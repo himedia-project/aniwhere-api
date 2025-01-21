@@ -16,6 +16,8 @@ public interface ProductService {
 
     List<ProductDTO> getAdultProducts();
 
+    List<ProductDTO> list(ProductDTO productDTO);
+
 //    default ProductDTO entityToDTO(Product product) {
 //        ProductDTO productDTO = ProductDTO.builder()
 //                .id(product.getId())

@@ -23,25 +23,20 @@ public class ProductController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam(required = false) String searchKeyword) {
-        List<ProductDTO> productDTOList;
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            productDTOList = productService.searchProducts(searchKeyword);
-        } else {
-            productDTOList = productService.getAllProducts();
-        }
-        return ResponseEntity.ok(productDTOList);
+    public ResponseEntity<List<ProductDTO>> searchProducts(ProductDTO productDTO) {
+        List<ProductDTO> dtolist = productService.list(productDTO);
+        return ResponseEntity.ok(dtolist);
     }
 
-    @GetMapping("/list/year/{branch}")
-    public ResponseEntity<List<ProductDTO>> getYearProducts(@PathVariable String branch) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getYearProducts(branch));
-    }
-
-    @GetMapping("/list/adult")
-    public ResponseEntity<List<ProductDTO>> getAdultProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getAdultProducts());
-    }
+//    @GetMapping("/list/year/{branch}")
+//    public ResponseEntity<List<ProductDTO>> getYearProducts(@PathVariable String branch) {
+//        return ResponseEntity.status(HttpStatus.OK).body(productService.getYearProducts(branch));
+//    }
+//
+//    @GetMapping("/list/adult")
+//    public ResponseEntity<List<ProductDTO>> getAdultProducts() {
+//        return ResponseEntity.status(HttpStatus.OK).body(productService.getAdultProducts());
+//    }
 
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
