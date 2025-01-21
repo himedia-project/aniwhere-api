@@ -1,6 +1,7 @@
 package com.aniwhere.aniwhereapi.domain.member.service;
 
 import com.aniwhere.aniwhereapi.domain.member.dto.JoinRequestDTO;
+import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
@@ -10,4 +11,6 @@ public interface MemberService {
     Map<String, Object> login(@NotBlank(message = "이메일을 입력해주세요") String email, @NotBlank(message = "패스워드를  입력해주세요") String password);
 
     void join(@Valid JoinRequestDTO joinRequestDTO);
+
+
 }

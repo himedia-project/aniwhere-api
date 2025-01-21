@@ -158,13 +158,13 @@ public class CustomControllerAdvice {
     }
 
     // 그외 나머지 exception들은 모두 이곳에서 처리
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<?> handleException(Exception e) {
+    @ExceptionHandler(NoAdultNoAccessException.class)
+    protected ResponseEntity<?> handleNoAdultNoAccessException(NoAdultNoAccessException e) {
+        // 로그 메시지와 사용자에게 보내는 메시지를 구분하는 것이 좋습니다
+        log.error("NoAdultNoAccessException 발생: {}", e.getMessage());
 
-        String msg = e.getMessage();
-        log.error("Exception: {}", msg);
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getErrorMessage(msg));
+        String userMessage = "아직 때가 되지 않았어요 어린이👧";
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(getErrorMessage(userMessage));
     }
 
 
