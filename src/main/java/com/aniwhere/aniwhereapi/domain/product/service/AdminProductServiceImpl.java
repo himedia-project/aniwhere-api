@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 
-
 @Slf4j
 @Transactional
 @Service
@@ -40,7 +39,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     public Long register(ProductDTO dto) {
 
         // 파일 업로드 처리
-        if(dto.getFiles() != null || !dto.getFiles().isEmpty()) {
+        if (dto.getFiles() != null || !dto.getFiles().isEmpty()) {
             List<MultipartFile> files = dto.getFiles();
             List<String> uploadFileNames = fileUtil.uploadS3Files(files);
             log.info("uploadFileNames: {}", uploadFileNames);
@@ -61,10 +60,18 @@ public class AdminProductServiceImpl implements AdminProductService {
         log.info("product result: {}", result);
 
         // 태그 처리
-        if(dto.getTagStrList() != null) {
+        if (dto.getTagStrList() != null) {
             dto.getTagStrList().forEach(tag -> {
                 log.info("tag: {}", tag);
-                Tag savedTag = tagRepository.save(Tag.from(tag));
+                // 이미 기존에 존재하는 태그인지 확인
+                Tag savedTag = null;
+                if (tagRepository.existsByName(tag)) {
+                    log.info("이미 존재하는 태그입니다. tag: {}", tag);
+                    savedTag = tagRepository.findByName(tag);
+                } else {
+                    log.info("새로운 태그입니다. tag: {}", tag);
+                    savedTag = tagRepository.save(Tag.from(tag));
+                }
                 productTagRepository.save(ProductTag.from(savedTag, result));
             });
         }
@@ -73,9 +80,9 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
 
-
     /**
      * Entity 찾기
+     *
      * @param id 엔티티 id
      * @return DTO
      */
@@ -86,6 +93,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     /**
      * 상품 카테고리 찾기
+     *
      * @param categoryId 카테고리 id
      * @return 카테고리
      */
