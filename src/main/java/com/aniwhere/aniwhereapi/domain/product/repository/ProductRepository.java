@@ -6,7 +6,7 @@ import com.aniwhere.aniwhereapi.domain.product.repository.querydsl.ProductReposi
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Long>
-, ProductRepositoryCustom {
+        , ProductRepositoryCustom {
 
 
 }
