@@ -1,9 +1,9 @@
 package com.aniwhere.aniwhereapi.domain.order.controllor;
 
+import com.aniwhere.aniwhereapi.domain.member.dto.MemberAuthDTO;
 import com.aniwhere.aniwhereapi.domain.order.dto.OrderDTO;
 import com.aniwhere.aniwhereapi.domain.order.dto.OrderHistDTO;
 import com.aniwhere.aniwhereapi.domain.order.service.OrderService;
-import com.aniwhere.aniwhereapi.security.MemberDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class OrderController {
      */
     @PostMapping
     public ResponseEntity<?> order(
-            @AuthenticationPrincipal MemberDTO memberDTO,
+            @AuthenticationPrincipal MemberAuthDTO memberDTO,
             @Valid @RequestBody OrderDTO orderDTO
     ) {
         log.info("order orderDTO: {}", orderDTO);
@@ -47,7 +47,7 @@ public class OrderController {
      */
     @GetMapping("/hist/list")
     public List<OrderHistDTO> orderHist(
-            @AuthenticationPrincipal MemberDTO memberDTO
+            @AuthenticationPrincipal MemberAuthDTO memberDTO
     ) {
         log.info("getOrders memberDTO: {}", memberDTO);
         return orderService.getOrders(memberDTO.getEmail());
@@ -62,7 +62,7 @@ public class OrderController {
      */
     @PostMapping("{id}/cancel")
     public ResponseEntity<String> cancelOrder(
-            @AuthenticationPrincipal MemberDTO memberDTO,
+            @AuthenticationPrincipal MemberAuthDTO memberDTO,
             @PathVariable("id") Long orderId
     ) {
         log.info("cancelOrder memberDTO: {}", memberDTO);

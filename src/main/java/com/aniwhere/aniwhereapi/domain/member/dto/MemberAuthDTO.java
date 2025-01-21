@@ -1,4 +1,4 @@
-package com.aniwhere.aniwhereapi.security;
+package com.aniwhere.aniwhereapi.domain.member.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-public class MemberDTO extends User {
+
+public class MemberAuthDTO extends User {
 
     private String email;
     private String password;
@@ -23,7 +24,8 @@ public class MemberDTO extends User {
     private List<String> roleNames = new ArrayList<>();
 
 
-    public MemberDTO(String email, String password, String name, List<String> roleNames) {
+
+    public MemberAuthDTO(String email, String password, String name, List<String> roleNames) {
         // ROLE_ 접두사를 붙여서 권한을 부여
         super(email, password, roleNames.stream().map(str -> new SimpleGrantedAuthority("ROLE_" + str)).collect(Collectors.toList()));
         this.email = email;
@@ -43,5 +45,6 @@ public class MemberDTO extends User {
 
         return dataMap;
     }
+
 
 }

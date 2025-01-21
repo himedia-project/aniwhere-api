@@ -3,7 +3,8 @@ package com.aniwhere.aniwhereapi.domain.cart.controller; // 올바른 패키지 
 import com.aniwhere.aniwhereapi.domain.cart.dto.CartItemDTO;
 import com.aniwhere.aniwhereapi.domain.cart.dto.CartItemListDTO;
 import com.aniwhere.aniwhereapi.domain.cart.service.CartService;
-import com.aniwhere.aniwhereapi.security.MemberDTO; // 올바른 경로로 수정
+
+import com.aniwhere.aniwhereapi.domain.member.dto.MemberAuthDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +23,7 @@ public class CartController {
 
     // 장바구니 목록 조회
     @GetMapping("/item/list")
-    public List<CartItemListDTO> getCartItems(@AuthenticationPrincipal MemberDTO memberDTO) {
+    public List<CartItemListDTO> getCartItems(@AuthenticationPrincipal MemberAuthDTO memberDTO) {
         String email = memberDTO.getEmail();
         log.info("--------------------------------------------");
         log.info("email: " + email);
@@ -32,7 +33,7 @@ public class CartController {
     // 장바구니에 상품 추가
     @PostMapping("/add")
     public List<CartItemListDTO> addCartItem(
-            @AuthenticationPrincipal MemberDTO memberDTO,
+            @AuthenticationPrincipal MemberAuthDTO memberDTO,
             @Valid @RequestBody CartItemDTO itemDTO
     ) {
         log.info("addCartItem.......... memberDTO: {}, itemDTO: {}", memberDTO, itemDTO);

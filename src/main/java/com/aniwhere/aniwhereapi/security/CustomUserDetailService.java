@@ -1,5 +1,6 @@
 package com.aniwhere.aniwhereapi.security;
 
+import com.aniwhere.aniwhereapi.domain.member.dto.MemberAuthDTO;
 import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import com.aniwhere.aniwhereapi.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,14 @@ public class CustomUserDetailService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        log.info("loadUserByUsername: username: {}", username);
+        log.info("loadUserByUsername: username: {}", email);
 
-        Member member = memberRepository.getWithRoles(username)
-                .orElseThrow(() -> new UsernameNotFoundException("미존재하는 사용자 email: " + username));
+        Member member = memberRepository.getWithRoles(email)
+                .orElseThrow(() -> new UsernameNotFoundException("미존재하는 사용자 email: " + email));
 
-        MemberDTO memberDTO = new MemberDTO(
+        MemberAuthDTO memberDTO = new MemberAuthDTO(
                 member.getEmail(),
                 member.getPassword(),
                 member.getName(),
