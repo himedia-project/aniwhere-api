@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
     private Long birthday;
     private String password;
     private String phone;
-    private MemberRole role;
+
 
     private boolean delFlag;
 

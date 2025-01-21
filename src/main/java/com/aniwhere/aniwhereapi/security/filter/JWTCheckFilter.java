@@ -1,7 +1,7 @@
 package com.aniwhere.aniwhereapi.security.filter;
 
+import com.aniwhere.aniwhereapi.domain.member.dto.MemberAuthDTO;
 import com.aniwhere.aniwhereapi.security.CustomUserDetailService;
-import com.aniwhere.aniwhereapi.security.MemberDTO;
 import com.aniwhere.aniwhereapi.util.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -101,13 +101,13 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             log.info("JWT claims: {}", claims);
 
-            MemberDTO memberDTO = (MemberDTO) userDetailService.loadUserByUsername((String) claims.get("email"));
+            MemberAuthDTO memberAuthDTO = (MemberAuthDTO) userDetailService.loadUserByUsername((String) claims.get("email"));
 
-            log.info("memberDTO: {}", memberDTO);
-            log.info("memberDto.getAuthorities(): {}", memberDTO.getAuthorities());
+            log.info("memberDTO: {}", memberAuthDTO);
+            log.info("memberDto.getAuthorities(): {}", memberAuthDTO.getAuthorities());
 
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(memberDTO, memberDTO.getPassword(), memberDTO.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(memberAuthDTO, memberAuthDTO.getPassword(), memberAuthDTO.getAuthorities());
 
             // SecurityContextHolder에 인증 객체 저장
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
