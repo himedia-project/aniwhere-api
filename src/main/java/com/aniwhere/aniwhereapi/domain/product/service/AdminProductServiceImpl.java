@@ -62,15 +62,16 @@ public class AdminProductServiceImpl implements AdminProductService {
         // 태그 처리
         if (dto.getTagStrList() != null) {
             dto.getTagStrList().forEach(tag -> {
-                log.info("tag: {}", tag);
+                String tagName = tag.trim();
+                log.info("tagName: {}", tagName);
                 // 이미 기존에 존재하는 태그인지 확인
                 Tag savedTag = null;
-                if (tagRepository.existsByName(tag)) {
-                    log.info("이미 존재하는 태그입니다. tag: {}", tag);
-                    savedTag = tagRepository.findByName(tag);
+                if (tagRepository.existsByName(tagName)) {
+                    log.info("이미 존재하는 태그입니다. tagName: {}", tagName);
+                    savedTag = tagRepository.findByName(tagName);
                 } else {
-                    log.info("새로운 태그입니다. tag: {}", tag);
-                    savedTag = tagRepository.save(Tag.from(tag));
+                    log.info("새로운 태그입니다. tagName: {}", tagName);
+                    savedTag = tagRepository.save(Tag.from(tagName));
                 }
                 productTagRepository.save(ProductTag.from(savedTag, result));
             });
