@@ -21,4 +21,9 @@ public class Tag extends BaseEntity {
 
     private String name;
 
+    public static Tag from(String tag) {
+        return Tag.builder()
+                .name(tag)
+                .build();
+    }
 }
