@@ -38,8 +38,8 @@ public class Product extends BaseEntity {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @Lob
-    @Column(name = "story")
+    // LongText
+    @Column(name = "story", columnDefinition = "LONGTEXT")
     private String story;
 
     @ColumnDefault("0")
