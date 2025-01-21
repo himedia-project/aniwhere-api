@@ -9,4 +9,7 @@ public interface ProductRepositoryCustom {
 
     List<Product> findListBySearchKeyword(String searchKeyword);
 
+    List<Product> findListByYear(String branch);
+
+    List<Product> findListByAdult();
 }

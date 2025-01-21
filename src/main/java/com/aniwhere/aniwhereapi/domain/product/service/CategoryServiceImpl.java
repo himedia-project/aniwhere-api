@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<ProductDTO> getProducts(Long categoryId) {
+    public List<ProductDTO> getCategoryProducts(Long categoryId) {
         List<Product> productList = categoryRepository.findListByCategory(categoryId);
         if (productList.isEmpty()) {
             throw new EntityNotFoundException("해당 카테고리에 대한 상품이 없습니다.");

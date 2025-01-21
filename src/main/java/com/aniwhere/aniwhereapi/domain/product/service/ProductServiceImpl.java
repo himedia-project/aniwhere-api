@@ -43,4 +43,26 @@ public class ProductServiceImpl implements ProductService {
         return productDTOList;
     }
 
+    @Override
+    public List<ProductDTO> getYearProducts(String branch) {
+        List<Product> productList = productRepository.findListByYear(branch);
+        if (productList.isEmpty()) {
+            throw new EntityNotFoundException("해당 분기에 대한 상품이 없습니다.");
+        }
+        List<ProductDTO> productDTOList = productList.stream().map(product ->
+                adminProductService.entityToDTO(product)).collect(Collectors.toList());
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> getAdultProducts() {
+        List<Product> productList = productRepository.findListByAdult();
+        if (productList.isEmpty()) {
+            throw new EntityNotFoundException("성인용 상품이 없습니다.");
+        }
+        List<ProductDTO> productDTOList = productList.stream().map(product ->
+                adminProductService.entityToDTO(product)).collect(Collectors.toList());
+        return productDTOList;
+    }
+
 }

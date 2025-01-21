@@ -6,6 +6,7 @@ import com.aniwhere.aniwhereapi.util.file.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,15 @@ public class ProductController {
         return ResponseEntity.ok(productDTOList);
     }
 
+    @GetMapping("/list/year/{branch}")
+    public ResponseEntity<List<ProductDTO>> getYearProducts(@PathVariable String branch) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getYearProducts(branch));
+    }
+
+    @GetMapping("/list/adult")
+    public ResponseEntity<List<ProductDTO>> getAdultProducts() {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAdultProducts());
+    }
 
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
