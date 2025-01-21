@@ -1,0 +1,11 @@
+package com.aniwhere.aniwhereapi.domain.product.excel;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class ProductIdListDTO {
+
+    private List<Long> IdList;
+}

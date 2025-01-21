@@ -47,7 +47,7 @@ public class Product extends BaseEntity {
     private Boolean delFlag;
 
     @NotNull
-    @ColumnDefault("0")
+    @ColumnDefault("1")
     @Column(name = "stock_number", nullable = false)
     private Integer stockNumber;
 
@@ -60,12 +60,14 @@ public class Product extends BaseEntity {
     private Adult adult;
 
     // 방영시기
-    private LocalDate releaseDate;
+    @Column(name = "release_date")
+    private LocalDate releaseDate;      // 2021-01-01
 
     // 제작사
     private String manufacturer;
 
     // 총화수
+    @Column(name = "total_episode")
     private Integer totalEpisode;
 
     // 장르
@@ -80,21 +82,8 @@ public class Product extends BaseEntity {
 
     // 태그 리스트
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<ProductTag> productTagList = new ArrayList<>();
-
-    // 재고수량 감소
-    public void removeStock(int stockNumber) {
-        int restStock = this.stockNumber - stockNumber;
-        if (restStock < 0) {
-            throw new OutOfStockException("상품의 재고가 부족합니다. (현재 재고 수량: " + this.stockNumber + ")");
-        }
-        this.stockNumber = restStock;
-    }
-
-    // 재고수량 증가
-    public void addStock(int stockNumber) {
-        this.stockNumber += stockNumber;
-    }
 
     /**
      * 상품 이미지, 상품에 추가
@@ -119,7 +108,6 @@ public class Product extends BaseEntity {
                 .imageName(fileName)
                 .build();
         addImage(productImage);
-
     }
 
     /**

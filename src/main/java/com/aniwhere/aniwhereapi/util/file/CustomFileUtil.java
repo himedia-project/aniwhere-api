@@ -23,8 +23,6 @@ public class CustomFileUtil {
 
     private final AwsS3Util s3Util;
 
-
-
 //    @PostConstruct
 //    public void init() {
 //        File tempFolder = new File(uploadPath);
@@ -71,8 +69,8 @@ public class CustomFileUtil {
         } catch (IOException e) {
             e.printStackTrace();
             log.error("getFile error: {}", e.getMessage());
+            throw new RuntimeException("Failed to get file: " + fileName);
         }
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
@@ -220,6 +218,8 @@ public class CustomFileUtil {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                log.error("uploadImagePathS3Files error: {}", e.getMessage());
+                throw new RuntimeException("Failed to download file from URL: " + imagePath);
             }
         }
         return this.uploadS3Files(multipartFiles);

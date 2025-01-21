@@ -42,23 +42,18 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         if (path.startsWith("/api/member/login") || path.startsWith("/api/member/join")
                 || path.startsWith("/api/member/refresh") || path.startsWith("/api/member/logout")
                 || path.startsWith("/api/member/kakao") || path.startsWith("/api/member/google")
-                || path.startsWith("/api/member/naver") || path.startsWith("/api/member/github")
-                || path.startsWith("/api/member/facebook")
-                // admin
-                || path.startsWith("/api/admin/member/login") || path.startsWith("/api/admin/member/join")
-                || path.startsWith("/api/admin/member/refresh") || path.startsWith("/api/admin/member/logout")
+
         ) {
             return true;
         }
         // "/api/product/list" api는 추가하지 말것!
 
-        if (path.startsWith("/api/admin/product/excel/download")) {
+        if (path.startsWith("/api/admin/product/excel/register")) {
             return true;
         }
 
         // /view 이미지 불러오기 api로 시작하는 요청은 필터를 타지 않도록 설정
-        if (path.startsWith("/api/product/view") || path.startsWith("/api/content/view")
-                || path.startsWith("/api/admin/product/view") || path.startsWith("/api/admin/content/view")) {
+        if (path.startsWith("/api/product/view")) {
             return true;
         }
 
@@ -90,11 +85,6 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         if (autHeaderStr == null && (
                 request.getServletPath().startsWith("/api/product/list")
-                        || request.getServletPath().startsWith("/api/product/new")
-                        || request.getServletPath().startsWith("/api/product/detail")
-                        || request.getServletPath().startsWith("/api/content/list")
-                        || request.getServletPath().startsWith("/api/content/detail")
-                        || request.getServletPath().startsWith("/api/content/search")
         )) {
             filterChain.doFilter(request, response);
             return;

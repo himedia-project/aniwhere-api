@@ -25,4 +25,10 @@ public class ProductTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
+    public static ProductTag from(Tag tag, Product product) {
+        return ProductTag.builder()
+                .tag(tag)
+                .product(product)
+                .build();
+    }
 }
