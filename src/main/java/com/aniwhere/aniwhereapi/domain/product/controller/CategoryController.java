@@ -1,7 +1,10 @@
 package com.aniwhere.aniwhereapi.domain.product.controller;
 
+import com.aniwhere.aniwhereapi.domain.product.dto.CategoryDTO;
 import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.service.CategoryService;
+import com.aniwhere.aniwhereapi.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +17,16 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/category")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+
+    @GetMapping("/list")
+    public ResponseEntity<List<CategoryDTO>> searchProducts() {
+        List<CategoryDTO> categorys = categoryService.getCategory();
+        return ResponseEntity.ok(categorys);
+    }
 
 //    @GetMapping("/list/{categoryId}")
 //    public ResponseEntity<List<ProductDTO>> getProducts(@PathVariable Long categoryId) {

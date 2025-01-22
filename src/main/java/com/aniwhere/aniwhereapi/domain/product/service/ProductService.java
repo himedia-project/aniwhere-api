@@ -2,7 +2,10 @@ package com.aniwhere.aniwhereapi.domain.product.service;
 
 
 import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
+import com.aniwhere.aniwhereapi.domain.product.entity.ProductTag;
+import com.aniwhere.aniwhereapi.domain.product.entity.Tag;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +20,8 @@ public interface ProductService {
 //    List<ProductDTO> getAdultProducts();
 
     List<ProductDTO> list(ProductDTO productDTO);
+
+    List<TagDTO> tagList(Long id);
 
 //    default ProductDTO entityToDTO(Product product) {
 //        ProductDTO productDTO = ProductDTO.builder()
