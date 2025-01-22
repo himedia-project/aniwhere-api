@@ -2,6 +2,7 @@ package com.aniwhere.aniwhereapi.domain.product.dto;
 
 import com.aniwhere.aniwhereapi.domain.product.enums.Adult;
 import com.aniwhere.aniwhereapi.domain.product.enums.ProductMdPick;
+import com.aniwhere.aniwhereapi.domain.product.enums.ProductNew;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,8 @@ public class ProductDTO {
     private String releaseDate;
     private String manufacturer;
 
+    private ProductNew isNew;
+
     private Integer stockNumber;
 //    private Integer delFlag;
 //    private List
@@ -53,8 +56,6 @@ public class ProductDTO {
     private LocalDateTime createdAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
-
-
 
 
 }

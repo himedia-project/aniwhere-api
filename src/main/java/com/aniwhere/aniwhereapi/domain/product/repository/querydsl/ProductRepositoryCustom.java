@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface ProductRepositoryCustom {
 
-    List<Product> findListBySearchKeyword(String searchKeyword);
-
-    List<Product> findListByYear(String branch);
-
-    List<Product> findListByAdult();
+//    List<Product> findListBySearchKeyword(String searchKeyword);
+//
+//    List<Product> findListByYear(String branch);
+//
+//    List<Product> findListByAdult();
 
     List<Product> findByDTO(ProductDTO productDTO);
 }

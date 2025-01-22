@@ -15,12 +15,12 @@ import static com.aniwhere.aniwhereapi.domain.product.entity.QProduct.product;
 public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<Product> findListByCategory(Long categoryId) {
-        return queryFactory
-                .selectFrom(product)
-                .where(product.category.id.eq(categoryId))
-                .stream()
-                .toList();
-    }
+//    @Override
+//    public List<Product> findListByCategory(Long categoryId) {
+//        return queryFactory
+//                .selectFrom(product)
+//                .where(product.category.id.eq(categoryId))
+//                .stream()
+//                .toList();
+//    }
 }
