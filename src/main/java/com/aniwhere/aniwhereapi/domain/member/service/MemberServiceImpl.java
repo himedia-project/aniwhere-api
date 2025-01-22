@@ -5,6 +5,8 @@ import com.aniwhere.aniwhereapi.domain.member.dto.MemberAuthDTO;
 import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import com.aniwhere.aniwhereapi.domain.member.enums.MemberRole;
 import com.aniwhere.aniwhereapi.domain.member.repository.MemberRepository;
+import com.aniwhere.aniwhereapi.domain.product.enums.Adult;
+import com.aniwhere.aniwhereapi.exception.NoAdultNoAccessException;
 import com.aniwhere.aniwhereapi.props.JwtProps;
 import com.aniwhere.aniwhereapi.security.CustomUserDetailService;
 import com.aniwhere.aniwhereapi.util.JWTUtil;
@@ -87,5 +89,14 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.save(adultMember);
         }
 
+    }
+
+    @Override
+    public void isAudultMember(String email) {
+        Member member = memberRepository.getWithRoles(email).orElse(null);
+        String role = member.getMemberRoleList().stream().map(MemberRole::toString).collect(Collectors.joining(","));
+        if (role.equals("KID")) {
+            throw new NoAdultNoAccessException("잼민이");
+        }
     }
 }

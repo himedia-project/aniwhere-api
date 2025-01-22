@@ -72,4 +72,10 @@ public class MemberController {
     }
 
 
+    @GetMapping("/adult/{email}")
+    public ResponseEntity<?> isAdultMemberAccess(@Valid @PathVariable("email") String email) {
+        memberService.isAudultMember(email);
+        return ResponseEntity.ok().build();
+    }
 }
+//true -> adult , false -> 잼민이 ㅋ

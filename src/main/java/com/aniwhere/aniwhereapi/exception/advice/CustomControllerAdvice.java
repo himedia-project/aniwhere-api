@@ -2,6 +2,7 @@ package com.aniwhere.aniwhereapi.exception.advice;
 
 
 import com.aniwhere.aniwhereapi.exception.CustomJWTException;
+import com.aniwhere.aniwhereapi.exception.NoAdultNoAccessException;
 import com.aniwhere.aniwhereapi.exception.OutOfStockException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;

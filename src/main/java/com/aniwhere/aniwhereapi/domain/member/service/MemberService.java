@@ -13,4 +13,5 @@ public interface MemberService {
     void join(@Valid JoinRequestDTO joinRequestDTO);
 
 
+    void isAudultMember(@Valid String email);
 }
