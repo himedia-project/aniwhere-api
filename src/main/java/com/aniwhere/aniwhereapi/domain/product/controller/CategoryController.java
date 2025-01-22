@@ -19,9 +19,9 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("/list/{categoryId}")
-    public ResponseEntity<List<ProductDTO>> getProducts(@PathVariable Long categoryId) {
-        List<ProductDTO> products = categoryService.getCategoryProducts(categoryId);
-        return ResponseEntity.ok(products);
-    }
+//    @GetMapping("/list/{categoryId}")
+//    public ResponseEntity<List<ProductDTO>> getProducts(@PathVariable Long categoryId) {
+//        List<ProductDTO> products = categoryService.getCategoryProducts(categoryId);
+//        return ResponseEntity.ok(products);
+//    }
 }

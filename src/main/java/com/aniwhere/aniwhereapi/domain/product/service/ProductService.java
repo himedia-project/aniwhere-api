@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public interface ProductService {
-    List<ProductDTO> searchProducts(String searchKeyword);
-
-    List<ProductDTO> getAllProducts();
-
-    List<ProductDTO> getYearProducts(String branch);
-
-    List<ProductDTO> getAdultProducts();
+//    List<ProductDTO> searchProducts(String searchKeyword);
+//
+//    List<ProductDTO> getAllProducts();
+//
+//    List<ProductDTO> getYearProducts(String branch);
+//
+//    List<ProductDTO> getAdultProducts();
 
     List<ProductDTO> list(ProductDTO productDTO);
 
