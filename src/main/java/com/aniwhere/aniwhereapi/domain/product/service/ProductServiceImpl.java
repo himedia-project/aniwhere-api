@@ -2,7 +2,9 @@ package com.aniwhere.aniwhereapi.domain.product.service;
 
 
 import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
+import com.aniwhere.aniwhereapi.domain.product.entity.Tag;
 import com.aniwhere.aniwhereapi.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +72,21 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> list(ProductDTO productDTO) {
         return productRepository.findByDTO(productDTO).stream()
                 .map(adminProductService::entityToDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<TagDTO> tagList(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 없습니다."));
+        return product.getProductTagList().stream()
+                .map(productTag -> {
+                    Tag tag = productTag.getTag();
+                    return TagDTO.builder()
+                            .id(tag.getId())
+                            .name(tag.getName())
+                            .build();
+                }).collect(Collectors.toList());
     }
 
 }

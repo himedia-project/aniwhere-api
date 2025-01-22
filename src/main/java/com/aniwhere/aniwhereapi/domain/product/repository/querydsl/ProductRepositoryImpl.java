@@ -6,7 +6,6 @@ import com.aniwhere.aniwhereapi.domain.product.enums.Adult;
 import com.aniwhere.aniwhereapi.domain.product.enums.ProductMdPick;
 import com.aniwhere.aniwhereapi.domain.product.enums.ProductNew;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -63,10 +62,19 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         eqMdPick(productDTO.getMdPick()),
                         containsSearchKeyword(productDTO.getSearchKeyword()),
                         betweenReleaseDate(productDTO.getReleaseDate()),
-                        eqAdult(productDTO.getAdult())
+                        eqAdult(productDTO.getAdult()),
+                        eqId(productDTO.getId())
+//                        eqTag(productDTO.getTagStrList().get)
                 )
                 .orderBy(eqIsNew(productDTO.getIsNew()))
                 .fetch();
+    }
+
+    private BooleanExpression eqId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return product.id.eq(id);
     }
 
     private OrderSpecifier<?> eqIsNew(ProductNew isNew) {
