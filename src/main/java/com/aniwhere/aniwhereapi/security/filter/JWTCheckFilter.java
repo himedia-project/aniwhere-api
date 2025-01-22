@@ -56,6 +56,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         if (path.startsWith("/api/product/view")) {
             return true;
         }
+        // 카테고리 리스트 요청은 필터 제외
+        if(path.startsWith("/api/category/list")){
+            return true;
+        }
 
         // Swagger UI 경로 제외 설정
         if (path.startsWith("/swagger-ui/") || path.startsWith("/v3/api-docs")) {
