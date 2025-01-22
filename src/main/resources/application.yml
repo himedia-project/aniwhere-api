@@ -71,8 +71,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/aniwhere?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1005
+    username: aniwhere
+    password: aniwhere
 
 app:
   props:
@@ -101,8 +101,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://host.docker.internal:3306/aniwhere?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1005
+    username: aniwhere
+    password: aniwhere
     hikari:
       max-lifetime: 600000 # 최대 수명 (밀리초)
       idle-timeout: 300000 # 유휴 시간 (밀리초)

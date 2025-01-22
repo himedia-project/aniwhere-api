@@ -8,10 +8,12 @@ import com.aniwhere.aniwhereapi.domain.cart.repository.CartItemRepository;
 import com.aniwhere.aniwhereapi.domain.cart.repository.CartRepository;
 import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.aniwhere.aniwhereapi.domain.product.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,7 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -34,23 +37,55 @@ public class CartServiceImpl implements CartService {
                 .toList();
     }
 
+//    @Override
+//    public List<CartItemListDTO> addCartItem(CartItemDTO cartItemDTO) {
+//        log.info("addCartItem..........");
+//        String email = cartItemDTO.getEmail();
+//        Long pno = cartItemDTO.getProductId();
+//
+//        Cart cart = this.getCart(email);
+//        CartItem cartItem = cartItemRepository.getItemOfPno(email, pno);
+//
+//        if (cartItem == null) {
+//            Product product = Product.builder().id(pno).build();
+//            log.info("Product ID: " + product.getId());
+//            cartItem = CartItem.builder().product(product).cart(cart).build();
+//            cartItemRepository.save(cartItem);
+//        }
+//
+//        return getCartItemList(email);
+//    }
+
     @Override
     public List<CartItemListDTO> addCartItem(CartItemDTO cartItemDTO) {
         log.info("addCartItem..........");
         String email = cartItemDTO.getEmail();
         Long pno = cartItemDTO.getProductId();
 
+        // 장바구니 가져오기
         Cart cart = this.getCart(email);
         CartItem cartItem = cartItemRepository.getItemOfPno(email, pno);
 
         if (cartItem == null) {
-            Product product = Product.builder().id(pno).build();
-            cartItem = CartItem.builder().product(product).cart(cart).build();
+            // 상품 정보를 데이터베이스에서 가져오기
+            Product product = productRepository.findById(pno)
+                    .orElseThrow(() -> new EntityNotFoundException("해당 상품이 존재하지 않습니다. productId: " + pno));
+
+            // 새로운 CartItem 생성
+            cartItem = CartItem.builder()
+                    .product(product)
+                    .cart(cart)
+                    .price(product.getPrice()) // 가격 설정
+                    .build();
+
             cartItemRepository.save(cartItem);
+        } else {
+            log.info("이미 장바구니에 존재하는 상품입니다. 상품 ID: " + pno);
         }
 
         return getCartItemList(email);
     }
+
 
     @Override
     public List<CartItemListDTO> removeCartItem(Long cartItemId) {
