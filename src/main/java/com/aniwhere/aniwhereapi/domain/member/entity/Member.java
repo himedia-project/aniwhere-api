@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
     private Long birthday;
     private String password;
     private String phone;
-
+    private boolean social; //카카오면 true , 카카오 아니면 false
 
     private boolean delFlag;
 
