@@ -11,7 +11,7 @@ public interface CategoryService {
 
     List<CategoryDTO> getCategory();
 
-    List<ProductDTO> getCategoryProducts(Long categoryId);
+//    List<ProductDTO> getCategoryProducts(Long categoryId);
 
     default CategoryDTO entityToDTO(Category category) {
 

@@ -5,5 +5,5 @@ import com.aniwhere.aniwhereapi.domain.product.entity.Product;
 import java.util.List;
 
 public interface CategoryRepositoryCustom {
-    List<Product> findListByCategory(Long categoryId);
+//    List<Product> findListByCategory(Long categoryId);
 }

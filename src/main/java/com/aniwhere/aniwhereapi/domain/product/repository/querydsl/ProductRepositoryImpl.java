@@ -4,6 +4,8 @@ import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
 import com.aniwhere.aniwhereapi.domain.product.enums.Adult;
 import com.aniwhere.aniwhereapi.domain.product.enums.ProductMdPick;
+import com.aniwhere.aniwhereapi.domain.product.enums.ProductNew;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,50 +24,67 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<Product> findListBySearchKeyword(String searchKeyword) {
-        return queryFactory
-                .selectFrom(product)
-                .where(product.name.contains(searchKeyword))
-                .stream()
-                .toList();
-    }
-
-    @Override
-    public List<Product> findListByYear(String branch) {
-        LocalDate startDate = LocalDate.of(Integer.parseInt(branch), 1, 1);
-        LocalDate endDate = LocalDate.of(Integer.parseInt(branch), 12, 31);
-
-        return queryFactory
-                .selectFrom(product)
-                .where(product.releaseDate.between(startDate, endDate))
-                .stream()
-                .toList();
-    }
-
-    @Override
-    public List<Product> findListByAdult() {
-        return queryFactory
-                .selectFrom(product)
-                .where()
-                .stream()
-                .toList();
-    }
+//    @Override
+//    public List<Product> findListBySearchKeyword(String searchKeyword) {
+//        return queryFactory
+//                .selectFrom(product)
+//                .where(product.name.contains(searchKeyword))
+//                .stream()
+//                .toList();
+//    }
+//
+//    @Override
+//    public List<Product> findListByYear(String branch) {
+//        LocalDate startDate = LocalDate.of(Integer.parseInt(branch), 1, 1);
+//        LocalDate endDate = LocalDate.of(Integer.parseInt(branch), 12, 31);
+//
+//        return queryFactory
+//                .selectFrom(product)
+//                .where(product.releaseDate.between(startDate, endDate))
+//                .stream()
+//                .toList();
+//    }
+//
+//    @Override
+//    public List<Product> findListByAdult() {
+//        return queryFactory
+//                .selectFrom(product)
+//                .where()
+//                .stream()
+//                .toList();
+//    }
 
     @Override
     public List<Product> findByDTO(ProductDTO productDTO) {
         return queryFactory
                 .selectFrom(product)
                 .where(
-                        eqAdult(productDTO.getAdult()),
+                        eqCategory(productDTO.getCategoryId()),
                         eqMdPick(productDTO.getMdPick()),
+                        containsSearchKeyword(productDTO.getSearchKeyword()),
                         betweenReleaseDate(productDTO.getReleaseDate()),
-                        containsSearchKeyword(productDTO.getSearchKeyword())
-                ).fetch();
+                        eqAdult(productDTO.getAdult())
+                )
+                .orderBy(eqIsNew(productDTO.getIsNew()))
+                .fetch();
+    }
+
+    private OrderSpecifier<?> eqIsNew(ProductNew isNew) {
+        if (isNew == null || ProductNew.N.equals(isNew)) {
+            return product.id.asc();
+        }
+        return product.id.desc();
+    }
+
+    private BooleanExpression eqCategory(Long categoryId) {
+        if (categoryId == null) {
+            return null;
+        }
+        return product.category.id.eq(categoryId);
     }
 
     private BooleanExpression eqMdPick(ProductMdPick mdPick) {
-        if(mdPick == null){
+        if (mdPick == null) {
             return null;
         }
         return product.mdPick.eq(mdPick);
@@ -73,8 +92,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 
     private BooleanExpression containsSearchKeyword(String searchKeyword) {
-
-        if(searchKeyword == null) {
+        if (searchKeyword == null) {
             return null;
         }
         return product.name.contains(searchKeyword)
@@ -83,7 +101,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     private BooleanExpression betweenReleaseDate(String branch) {
-        if(branch == null) {
+        if (branch == null) {
             return null;
         }
         LocalDate startDate = LocalDate.of(Integer.parseInt(branch), 1, 1);
