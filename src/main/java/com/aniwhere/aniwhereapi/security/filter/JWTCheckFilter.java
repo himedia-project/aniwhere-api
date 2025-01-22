@@ -57,12 +57,17 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
         // 카테고리 리스트 요청은 필터 제외
-        if(path.startsWith("/api/category/list")){
+        if (path.startsWith("/api/category/list")) {
             return true;
         }
 
         // api/product/{id}/tag/list 요청은 필터 제외
-        if(path.startsWith("/api/product/") && path.endsWith("/tag/list")){
+        if (path.startsWith("/api/product/") && path.endsWith("/tag/list")) {
+            return true;
+        }
+
+        // /api/tag/{id}/product/list 요청은 필터 제외
+        if (path.startsWith("/api/tag/") && path.endsWith("/product/list")) {
             return true;
         }
 

@@ -40,7 +40,6 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("security config...............");
@@ -59,9 +58,9 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/crawl/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/category/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/heart/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/tag/**")).permitAll()
                         .anyRequest().authenticated()
         );
-
 
 
         http.cors(httpSecurityCorsConfigurer -> {
