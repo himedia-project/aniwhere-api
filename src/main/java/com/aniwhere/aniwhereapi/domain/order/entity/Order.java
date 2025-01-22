@@ -56,6 +56,7 @@ public class Order {
                 .member(member)
                 .orderDate(LocalDateTime.now())
                 .orderStatus(OrderStatus.ORDER)
+                .code(orderCodeGenerator()) // 주문 코드 생성
                 .build();
 
         orderItems.forEach(order::addOrderItem);

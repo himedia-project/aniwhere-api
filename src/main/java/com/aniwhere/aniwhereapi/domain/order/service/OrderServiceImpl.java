@@ -50,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 주문 생성
         Order savedOrder = orderRepository.save(Order.createOrder(member, orderItemList));
+        log.info("Order created with code: {}", savedOrder.getCode()); // 생성된 주문 코드 로그 출력
         return savedOrder.getId();
     }
 
