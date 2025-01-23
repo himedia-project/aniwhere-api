@@ -19,6 +19,8 @@ public interface ProductService {
 //
 //    List<ProductDTO> getAdultProducts();
 
+    ProductDTO getProduct(Long id);
+
     List<ProductDTO> list(ProductDTO productDTO);
 
     List<TagDTO> tagList(Long id);
