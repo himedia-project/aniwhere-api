@@ -25,7 +25,7 @@ public class ProductController {
     private final CustomFileUtil fileUtil;
     private final ProductService productService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detail")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
         ProductDTO dto = productService.getProduct(id);
         return ResponseEntity.ok(dto);

@@ -99,6 +99,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         if (autHeaderStr == null && (
                 request.getServletPath().startsWith("/api/product/list")
+                        || (request.getServletPath().startsWith("/api/product/") && request.getServletPath().endsWith("/detail"))
         )) {
             filterChain.doFilter(request, response);
             return;
