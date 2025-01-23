@@ -1,7 +1,6 @@
 package com.aniwhere.aniwhereapi.domain.member.service;
 
 import com.aniwhere.aniwhereapi.domain.member.dto.JoinRequestDTO;
-import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
@@ -13,5 +12,5 @@ public interface MemberService {
     void join(@Valid JoinRequestDTO joinRequestDTO);
 
 
-    void isAudultMember(@Valid String email);
+    void isAdultMember(@Valid String email);
 }

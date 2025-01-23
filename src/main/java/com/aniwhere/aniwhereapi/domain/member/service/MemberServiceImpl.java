@@ -92,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void isAudultMember(String email) {
+    public void isAdultMember(String email) {
         Member member = memberRepository.getWithRoles(email).orElse(null);
         String role = member.getMemberRoleList().stream().map(MemberRole::toString).collect(Collectors.joining(","));
         if (role.equals("KID")) {

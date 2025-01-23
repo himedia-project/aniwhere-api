@@ -4,6 +4,7 @@ package com.aniwhere.aniwhereapi.domain.member.controller;
 import com.aniwhere.aniwhereapi.domain.member.dto.JoinRequestDTO;
 import com.aniwhere.aniwhereapi.domain.member.dto.LoginRequestDTO;
 import com.aniwhere.aniwhereapi.domain.member.dto.LoginResponseDTO;
+import com.aniwhere.aniwhereapi.domain.member.dto.MemberAuthDTO;
 import com.aniwhere.aniwhereapi.domain.member.service.MemberService;
 import com.aniwhere.aniwhereapi.props.JwtProps;
 import com.aniwhere.aniwhereapi.util.CookieUtil;
@@ -13,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -72,9 +74,9 @@ public class MemberController {
     }
 
 
-    @GetMapping("/adult/{email}")
-    public ResponseEntity<?> isAdultMemberAccess(@Valid @PathVariable("email") String email) {
-        memberService.isAudultMember(email);
+    @GetMapping("/adult")
+    public ResponseEntity<?> isAdultMemberAccess(@AuthenticationPrincipal MemberAuthDTO memberDTO) {
+        memberService.isAdultMember(memberDTO.getEmail());
         return ResponseEntity.ok().build();
     }
 }
