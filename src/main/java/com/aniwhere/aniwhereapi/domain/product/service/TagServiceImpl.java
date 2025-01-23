@@ -25,12 +25,13 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<ProductDTO> list(Long id) {
         List<Long> productIds = tagRepository.findByTag(id);
-        if (productIds == null && productIds.isEmpty()) {
+        if (productIds == null || productIds.isEmpty()) {
             throw new EntityNotFoundException("해당 엔티티가 없습니다.");
         }
 
         return productIds.stream().map(productId -> {
-            Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 없습니다."));
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 없습니다."));
             ProductDTO productDTO = adminProductService.entityToDTO(product);
             return productDTO;
         }).toList();
