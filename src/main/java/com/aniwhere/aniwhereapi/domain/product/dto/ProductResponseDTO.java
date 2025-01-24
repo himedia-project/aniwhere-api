@@ -30,6 +30,10 @@ public class ProductResponseDTO {
 
     private List<String> imagePathList;
 
+    // 파일 업로드한 url 응답값
+    @Builder.Default
+    private List<String> uploadFileNames = new ArrayList<>();
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

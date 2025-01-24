@@ -5,6 +5,7 @@ import com.aniwhere.aniwhereapi.domain.product.dto.ProductRequestDTO;
 import com.aniwhere.aniwhereapi.domain.product.dto.ProductResponseDTO;
 import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
+import com.aniwhere.aniwhereapi.domain.product.entity.ProductImage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public interface ProductService {
                 .totalEpisode(product.getTotalEpisode())
                 .releaseDate(product.getReleaseDate().toString())
                 .manufacturer(product.getManufacturer())
+                .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).collect(Collectors.toList()))
                 .imagePathList(product.getImageList().stream().map(productImage ->
                         productImage.getImageName()).collect(Collectors.toList()))
                 .createdAt(product.getCreatedAt())
