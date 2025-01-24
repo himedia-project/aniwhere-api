@@ -2,6 +2,7 @@ package com.aniwhere.aniwhereapi.domain.order.service;
 
 import com.aniwhere.aniwhereapi.domain.cart.dto.CartItemDTO;
 import com.aniwhere.aniwhereapi.domain.cart.repository.CartItemRepository;
+import com.aniwhere.aniwhereapi.domain.cart.service.CartService;
 import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import com.aniwhere.aniwhereapi.domain.member.repository.MemberRepository;
 import com.aniwhere.aniwhereapi.domain.order.dto.OrderHistDTO;
@@ -29,12 +30,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final CartItemRepository cartItemRepository;
+    private final CartService cartService;
 
     @Override
     public Long order(List<CartItemDTO> cartItemDTOs, String email) {
         // 회원 정보 조회
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("해당 회원이 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당 회원이 없습니다. email: " + email));
 
         List<OrderItem> orderItemList = new ArrayList<>();
 
@@ -43,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
             // 상품 정보 조회
             Product product = productRepository.findById(cartItemDTO.getProductId())
-                    .orElseThrow(() -> new EntityNotFoundException("해당 상품이 없습니다."));
+                    .orElseThrow(() -> new EntityNotFoundException("해당 상품이 없습니다. productId: " + cartItemDTO.getProductId()));
 
             // 주문 아이템 생성 (수량 정보는 없음)
             OrderItem orderItem = OrderItem.createOrderItem(product); // 수량을 1로 고정
@@ -53,10 +55,11 @@ public class OrderServiceImpl implements OrderService {
         // 주문 생성
         Order savedOrder = orderRepository.save(Order.createOrder(member, orderItemList));
         log.info("Order created with code: {}", savedOrder.getCode()); // 생성된 주문 코드 로그 출력
-        // 주문 후, 해당 장바구니 cart items 삭제
-        orderItemList.forEach(orderItem -> {
-            cartItemRepository.delete(cartItemRepository.findByProductId(orderItem.getProduct().getId()));
+        // 주문 후, 장바구니로 주문하는 거라면, 해당 장바구니 cart items 삭제
+        cartService.getCartItemList(email).forEach(cartItemDTO -> {
+            cartItemRepository.delete(cartItemRepository.findByProductId(cartItemDTO.getProductId()));
         });
+
         return savedOrder.getId();
     }
 
