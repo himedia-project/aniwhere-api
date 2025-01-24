@@ -1,6 +1,8 @@
 package com.aniwhere.aniwhereapi.domain.product.controller;
 
 import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.ProductRequestDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.ProductResponseDTO;
 import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.ProductTag;
 import com.aniwhere.aniwhereapi.domain.product.service.ProductService;
@@ -26,15 +28,15 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{id}/detail")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
-        ProductDTO dto = productService.getProduct(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
+        ProductResponseDTO responseDTO = productService.getProduct(id);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ProductDTO>> searchProducts(ProductDTO productDTO) {
-        List<ProductDTO> dtolist = productService.list(productDTO);
-        return ResponseEntity.ok(dtolist);
+    public ResponseEntity<List<ProductResponseDTO>> searchProducts(ProductRequestDTO requestDTO) {
+        List<ProductResponseDTO> responseDTOList = productService.list(requestDTO);
+        return ResponseEntity.ok(responseDTOList);
     }
 
     @GetMapping("/{id}/tag/list")

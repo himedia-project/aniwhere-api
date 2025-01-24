@@ -1,6 +1,6 @@
 package com.aniwhere.aniwhereapi.domain.product.repository.querydsl;
 
-import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.ProductRequestDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
 import com.aniwhere.aniwhereapi.domain.product.enums.Adult;
 import com.aniwhere.aniwhereapi.domain.product.enums.ProductMdPick;
@@ -54,19 +54,19 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 //    }
 
     @Override
-    public List<Product> findByDTO(ProductDTO productDTO) {
+    public List<Product> findByDTO(ProductRequestDTO requestDTO) {
         return queryFactory
                 .selectFrom(product)
                 .where(
-                        eqCategory(productDTO.getCategoryId()),
-                        eqMdPick(productDTO.getMdPick()),
-                        containsSearchKeyword(productDTO.getSearchKeyword()),
-                        betweenReleaseDate(productDTO.getReleaseDate()),
-                        eqAdult(productDTO.getAdult()),
-                        eqId(productDTO.getId())
+                        eqCategory(requestDTO.getCategoryId()),
+                        eqMdPick(requestDTO.getMdPick()),
+                        containsSearchKeyword(requestDTO.getSearchKeyword()),
+                        betweenReleaseDate(requestDTO.getReleaseDate()),
+                        eqAdult(requestDTO.getAdult()),
+                        eqId(requestDTO.getId())
 //                        eqTag(productDTO.getTagStrList().get)
                 )
-                .orderBy(eqIsNew(productDTO.getIsNew()))
+                .orderBy(eqIsNew(requestDTO.getIsNew()))
                 .fetch();
     }
 
