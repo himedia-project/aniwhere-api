@@ -158,7 +158,7 @@ public class AwsS3Util {
         }
 
         for (String fileName : fileNames) {
-            s3Client.deleteObject(bucketName, fileName);
+            this.deleteFile(fileName);
         }
     }
 
