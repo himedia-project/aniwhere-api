@@ -1,7 +1,8 @@
 package com.aniwhere.aniwhereapi.domain.product.service;
 
 
-import com.aniwhere.aniwhereapi.domain.product.dto.ProductDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.ProductRequestDTO;
+import com.aniwhere.aniwhereapi.domain.product.dto.ProductResponseDTO;
 import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
 import com.aniwhere.aniwhereapi.domain.product.entity.Tag;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final AdminProductService adminProductService;
+//    private final AdminProductService adminProductService;
 
 //    @Override
 //    public List<ProductDTO> searchProducts(String searchKeyword) {
@@ -70,17 +70,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional(readOnly = true)
     @Override
-    public ProductDTO getProduct(Long id) {
+    public ProductResponseDTO getProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 없습니다."));
-        return adminProductService.entityToDTO(product);
+        return entityToDTO(product);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductDTO> list(ProductDTO productDTO) {
-        return productRepository.findByDTO(productDTO).stream()
-                .map(adminProductService::entityToDTO).collect(Collectors.toList());
+    public List<ProductResponseDTO> list(ProductRequestDTO requestDTO) {
+        List<ProductResponseDTO> responseDTOList = productRepository.findByDTO(requestDTO).stream()
+                .map(this::entityToDTO).collect(Collectors.toList());
+        return responseDTOList;
     }
 
     @Transactional(readOnly = true)
