@@ -51,7 +51,7 @@ app:
         client-name: Kakao
     jwt:
       secret-key: 1234567890123456789012345678901234567890
-      access-token-expiration-period: 15 # 운영시, 15분, 테스트를 위해 150분
+      access-token-expiration-period: 150 # 운영시, 15분, 테스트를 위해 150분
       refresh-token-expiration-period: 1440 # 24시간 60 * 24 = 1440분
 
     aws:
