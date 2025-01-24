@@ -1,5 +1,6 @@
 package com.aniwhere.aniwhereapi.domain.order.dto;
 
+import com.aniwhere.aniwhereapi.domain.order.entity.OrderItem;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.aniwhere.aniwhereapi.domain.order.entity.Order;
 import com.aniwhere.aniwhereapi.domain.order.enums.OrderStatus;
@@ -32,14 +33,22 @@ public class OrderHistDTO {
 
     // order -> orderHistDTO 변환
     public static OrderHistDTO from(Order order) {
-        return OrderHistDTO.builder()
+        OrderHistDTO dto = OrderHistDTO.builder()
                 .orderId(order.getId())
-                .orderCode(order.getCode()) // 주문 코드 생성 로직 필요
+                .orderCode(order.getCode())
                 .email(order.getMember().getEmail())
                 .orderDate(order.getOrderDate())
                 .orderStatus(order.getOrderStatus())
                 .totalPrice(order.getTotalPrice())
                 .build();
+
+        // 주문 아이템을 OrderItemDTO로 변환하여 추가
+        for (OrderItem item : order.getOrderItems()) {
+            String imgUrl = item.getProduct().getImageList().isEmpty() ? null : item.getProduct().getImageList().get(0).getImageName();
+            dto.addOrderItemDto(OrderItemDTO.from(item, imgUrl));
+        }
+
+        return dto;
     }
 
     // 주문 상품 리스트 추가
@@ -47,3 +56,4 @@ public class OrderHistDTO {
         orderItems.add(orderItemDto);
     }
 }
+
