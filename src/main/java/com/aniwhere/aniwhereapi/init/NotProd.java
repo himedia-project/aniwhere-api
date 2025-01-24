@@ -39,7 +39,7 @@ public class NotProd {
 
             // Member 초기화
             if (memberRepository.count() == 0) {
-                Member member = Member.builder()
+                Member member1 = Member.builder()
                         .email("test@test.com")
                         .name("test")
                         .password(passwordEncoder.encode("1234"))
@@ -47,8 +47,19 @@ public class NotProd {
                         .delFlag(false)
                         .build();
 
-                member.addRole(MemberRole.ADULT_USER);
-                memberRepository.save(member);
+                member1.addRole(MemberRole.ADULT_USER);
+
+                Member member2 = Member.builder()
+                        .email("jammin@test.com")
+                        .name("jammin")
+                        .password(passwordEncoder.encode("1234"))
+                        .phone("010-1234-5678")
+                        .delFlag(false)
+                        .build();
+
+                member2.addRole(MemberRole.KID);
+
+                memberRepository.saveAll(List.of(member1, member2));
                 log.info("Member 초기 데이터 생성 완료");
             }
 
