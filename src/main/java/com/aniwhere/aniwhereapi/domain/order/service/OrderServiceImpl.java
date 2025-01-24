@@ -1,6 +1,7 @@
 package com.aniwhere.aniwhereapi.domain.order.service;
 
 import com.aniwhere.aniwhereapi.domain.cart.dto.CartItemDTO;
+import com.aniwhere.aniwhereapi.domain.cart.repository.CartItemRepository;
 import com.aniwhere.aniwhereapi.domain.member.entity.Member;
 import com.aniwhere.aniwhereapi.domain.member.repository.MemberRepository;
 import com.aniwhere.aniwhereapi.domain.order.dto.OrderHistDTO;
@@ -27,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public Long order(List<CartItemDTO> cartItemDTOs, String email) {
@@ -51,6 +53,10 @@ public class OrderServiceImpl implements OrderService {
         // 주문 생성
         Order savedOrder = orderRepository.save(Order.createOrder(member, orderItemList));
         log.info("Order created with code: {}", savedOrder.getCode()); // 생성된 주문 코드 로그 출력
+        // 주문 후, 해당 장바구니 cart items 삭제
+        orderItemList.forEach(orderItem -> {
+            cartItemRepository.delete(cartItemRepository.findByProductId(orderItem.getProduct().getId()));
+        });
         return savedOrder.getId();
     }
 
