@@ -66,7 +66,7 @@ dependencies {
     // aws s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-    // thumbnailator(webp 지원 x)
+    // thumbnailator(gif,webp 지원 x)
     implementation 'net.coobird:thumbnailator:0.4.19'
 
     // Apache POI

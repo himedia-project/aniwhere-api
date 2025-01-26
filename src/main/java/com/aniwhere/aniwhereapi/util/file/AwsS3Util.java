@@ -73,9 +73,10 @@ public class AwsS3Util {
         Path thumbnailPath = null;
         try {
             thumbnailPath = Paths.get(thumbnailFileName);
-            // WebP 파일인 경우와 그 외 이미지 파일 처리를 분리
-            if ("webp".equals(extension)) {
-                // WebP 파일은 원본 그대로 저장
+            
+            // WebP, GIF 파일인 경우와 그 외 이미지 파일 처리를 분리
+            if ("webp".equals(extension) || "gif".equals(extension)) {
+                // WebP, GIF 파일은 원본 그대로 저장
                 file.transferTo(thumbnailPath.toFile());
             } else {
                 // 일반 이미지 파일은 썸네일 생성
@@ -85,7 +86,7 @@ public class AwsS3Util {
                         .toFile(thumbnailPath.toFile());
             }
 
-            // S3에 썸네일 업로드
+            // S3에 업로드
             s3Client.putObject(new PutObjectRequest(bucketName, thumbnailPath.toFile().getName(), thumbnailPath.toFile()));
         } catch (IOException e) {
             throw new RuntimeException("파일 업로드 중 오류가 발생했습니다: " + e.getMessage());
