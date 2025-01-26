@@ -58,12 +58,13 @@ public class AwsS3Util {
      * @return 업로드된 파일 URL
      */
     public String uploadFile(MultipartFile file) {
-
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
 
-        String extension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+        String extension = Objects.requireNonNull(file.getOriginalFilename())
+                .substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+                .toLowerCase();
 
         checkImageExtension(extension);
 
@@ -72,25 +73,29 @@ public class AwsS3Util {
         Path thumbnailPath = null;
         try {
             thumbnailPath = Paths.get(thumbnailFileName);
-            // 썸네일 생성
-            Thumbnails.of(file.getInputStream())
-                    .size(400, 400)
-                    .outputFormat(extension)  // 원본 파일의 확장자를 사용
-                    .toFile(thumbnailPath.toFile());
+            // WebP 파일인 경우와 그 외 이미지 파일 처리를 분리
+            if ("webp".equals(extension)) {
+                // WebP 파일은 원본 그대로 저장
+                file.transferTo(thumbnailPath.toFile());
+            } else {
+                // 일반 이미지 파일은 썸네일 생성
+                Thumbnails.of(file.getInputStream())
+                        .size(400, 400)
+                        .outputFormat(extension)
+                        .toFile(thumbnailPath.toFile());
+            }
 
             // S3에 썸네일 업로드
             s3Client.putObject(new PutObjectRequest(bucketName, thumbnailPath.toFile().getName(), thumbnailPath.toFile()));
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다: " + e.getMessage());
         } finally {
             // 썸네일 로컬 파일 삭제
             if (thumbnailPath != null && Files.exists(thumbnailPath)) {
                 log.info("local thumbnailPath exist! {}", thumbnailPath);
                 try {
                     Files.delete(thumbnailPath);
-
                 } catch (IOException e) {
-                    // 예외 발생 시 로그 남기기
                     log.error("Failed to delete local thumbnail file: {}", e.getMessage());
                 }
             }
@@ -104,10 +109,10 @@ public class AwsS3Util {
      * @param extension 이미지 확장자
      */
     private void checkImageExtension(String extension) {
-        // 허용된 이미지 확장자 검증 -> TODO webp 추가
-        Set<String> allowedExtensions = Set.of("jpg", "jpeg", "png", "gif");
+        // 허용된 이미지 확장자 검증 (WebP 포함)
+        Set<String> allowedExtensions = Set.of("jpg", "jpeg", "png", "gif", "webp");
         if (!allowedExtensions.contains(extension)) {
-            throw new IllegalArgumentException("이미지 확장자는 jpg, jpeg, png, gif만 허용됩니다.");
+            throw new IllegalArgumentException("이미지 확장자는 jpg, jpeg, png, gif, webp만 허용됩니다.");
         }
     }
 
