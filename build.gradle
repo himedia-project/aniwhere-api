@@ -1,4 +1,3 @@
-
 // QueryDSL 버전정보 추가
 buildscript {
     ext {
@@ -43,11 +42,9 @@ dependencies {
 
     // ⭐ Spring boot 3.x이상에서 QueryDsl 패키지를 정의하는 방법
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
-    annotationProcessor(
-
-            "jakarta.persistence:jakarta.persistence-api",
-            "jakarta.annotation:jakarta.annotation-api",
-            "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -84,12 +81,14 @@ dependencies {
     implementation 'jakarta.activation:jakarta.activation-api:2.1.0'
 }
 
+
+// 테스트 설정 추가
 tasks.named('test') {
     useJUnitPlatform()
 }
 
 
-// === ⭐ QueryDsl 빌드 옵션 (선택) ===
+// === ⭐ QueryDSL 빌드 옵션 (선택) ===
 def querydslDir = "$buildDir/generated/querydsl"
 
 sourceSets {
@@ -97,15 +96,36 @@ sourceSets {
 }
 
 tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+    options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
 
-clean.doLast {
-    file(querydslDir).deleteDir()
+// clean 태스크 실행 시 생성된 Q클래스 삭제 (사용 중인 경우)
+clean {
+    delete file(querydslDir)
 }
 
 
 // plain - jar 생략
 jar {
     enabled = false
+}
+
+// bootJar - 중복 제거
+tasks.named('bootJar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// bootWar - 중복 제거
+tasks.named('jar') {
+    enabled = false
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// JAXB 의존성 중복 해결을 위한 설정
+configurations.all {
+    resolutionStrategy {
+        // JAXB 버전 충돌 해결
+        force 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+        force 'com.sun.xml.bind:jaxb-impl:4.0.0'
+    }
 }
