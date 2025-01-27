@@ -19,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Objects;
 
 @Log4j2
 @Component
@@ -97,15 +98,17 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String autHeaderStr = request.getHeader("Authorization");
         log.info("autHeaderStr Authorization: {}", autHeaderStr);
 
-        if (autHeaderStr == null && (
+        if ((Objects.equals(autHeaderStr, "Bearer null") || autHeaderStr == null ) && (
                 request.getServletPath().startsWith("/api/product/list")
                         || (request.getServletPath().startsWith("/api/product/") && request.getServletPath().endsWith("/detail"))
+                        || (request.getServletPath().startsWith("/api/product/") && request.getServletPath().endsWith("/tag/list"))
         )) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
+
             // Bearer accessToken 형태로 전달되므로 Bearer 제거
             String accessToken = autHeaderStr.substring(7);// Bearer 제거
             // 쿠키로 가져와
