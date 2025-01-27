@@ -57,5 +57,6 @@ public class ProductController {
     public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
+//Resource -자바가 관리하는 파일 객체 타입
 
 }

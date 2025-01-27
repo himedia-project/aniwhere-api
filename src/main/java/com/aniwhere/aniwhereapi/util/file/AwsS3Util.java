@@ -100,7 +100,7 @@ public class AwsS3Util {
 
     /**
      * 이미지 확장자 검증
-     *
+     * 스프링부트에서 제공하는 파일 객체
      * @param extension 이미지 확장자
      */
     private void checkImageExtension(String extension) {
