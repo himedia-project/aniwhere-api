@@ -40,8 +40,8 @@ public class NotProd {
             // Member 초기화
             if (memberRepository.count() == 0) {
                 Member member1 = Member.builder()
-                        .email("test@test.com")
-                        .name("test")
+                        .email("adult@test.com")
+                        .name("adult")
                         .password(passwordEncoder.encode("1234"))
                         .phone("010-1234-5678")
                         .delFlag(false)
