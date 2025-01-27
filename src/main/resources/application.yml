@@ -93,14 +93,15 @@ spring:
       on-profile: prod # 운영 환경
   jpa:
     hibernate:
-      ddl-auto: none # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
+      ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
 #  sql:
 #    init:
 #      mode: never # SQL 초기화 모드 (always, never, embedded, embedded-always)
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://host.docker.internal:3306/aniwhere?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    url: jdbc:mysql://host.docker.internal:3306/aniwhere?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/aniwhere?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: aniwhere
     password: aniwhere
     hikari:

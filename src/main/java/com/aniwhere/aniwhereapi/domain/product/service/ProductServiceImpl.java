@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
                             .id(tag.getId())
                             .name(tag.getName())
                             .build();
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toList());  // TODO: querydsl 로 변경 + 페치조인 적용
     }
 
 }
