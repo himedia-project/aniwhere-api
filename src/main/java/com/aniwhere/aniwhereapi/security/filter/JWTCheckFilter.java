@@ -73,7 +73,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
 
         // health check 요청은 필터를 타지 않도록 설정
-        if (path.startsWith("/api/health")) {
+        if (path.startsWith("/health")) {
             return true;
         }
 
