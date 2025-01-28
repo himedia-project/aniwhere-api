@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/health")
+@RequestMapping("/health")
 public class HealthController {
 
     private final String uniqueId = UUID.randomUUID().toString();
