@@ -34,6 +34,7 @@ spring:
         highlight_sql: true # SQL 하이라이트 출력
         use_sql_comments: true # JPQL SQL 주석 사용
         default_batch_fetch_size: 100 # 기본 배치 크기 설정
+# 🌟 sql init 처리시 사용
 #  sql:
 #    init:
 #      platform: mysql # SQL 초기화 플랫폼 (mysql, h2, postgresql, oracle, sqlserver)
