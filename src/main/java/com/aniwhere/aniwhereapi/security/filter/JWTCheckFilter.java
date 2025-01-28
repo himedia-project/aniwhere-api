@@ -29,7 +29,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
     private final CustomUserDetailService userDetailService;
 
-    // 해당 필터로직(doFilterInternal)을 수행할지 여부를 결정하는 메서드
+    // 해당 필터로직(doFilterInternal)을 수행할지 여부를 결정하는 메서드, SecuirtyConfig 필터를 거치지 않는게 아님!
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
