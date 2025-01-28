@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/category/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/heart/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/tag/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/health/**")).permitAll()
                         .anyRequest().authenticated()
         );
 

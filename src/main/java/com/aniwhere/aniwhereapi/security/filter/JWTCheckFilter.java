@@ -72,6 +72,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
+        // health check 요청은 필터를 타지 않도록 설정
+        if (path.startsWith("/api/health")) {
+            return true;
+        }
+
         // Swagger UI 경로 제외 설정
         if (path.startsWith("/swagger-ui/") || path.startsWith("/v3/api-docs")) {
             return true;
