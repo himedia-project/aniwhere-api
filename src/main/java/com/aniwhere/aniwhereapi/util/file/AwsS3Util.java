@@ -158,11 +158,6 @@ public class AwsS3Util {
      * @param fileNames 파일 이름 리스트
      */
     public void deleteFiles(List<String> fileNames) {
-
-        if (fileNames == null || fileNames.isEmpty()) {
-            return;
-        }
-
         for (String fileName : fileNames) {
             this.deleteFile(fileName);
         }
