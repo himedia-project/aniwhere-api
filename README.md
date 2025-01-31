@@ -65,6 +65,10 @@ Aniwhere API는 애니메이션 관련 상품을 관리하고 사용자 상호�
 
 
 ## 실행 및 빌드
+0. 로컬 실행
+   1. application.yml 내 sql init mode 주석풀기
+   2. jpa ddl-auto create 실행한후, data.sql 문이 insert 
+   3. 그후 ddl-auto none으로 변경
 1. Build : `./gradlew build -x test`
 2. Run : `nohup java -jar *.jar --spring.profiles.active=prod  &`
 
