@@ -2,6 +2,10 @@
 
 Aniwhere API는 애니메이션 관련 상품을 관리하고 사용자 상호작용을 처리하는 Spring Boot 기반의 백엔드 서비스입니다.
 
+
+![aniwhere_detail](https://github.com/user-attachments/assets/dc3561fa-56b1-401e-9e68-2eaa1b19a339)
+
+
 ## 주요 기능
 
 - **사용자 인증**
