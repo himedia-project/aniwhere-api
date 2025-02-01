@@ -111,9 +111,9 @@ public class AwsS3Util {
      */
     private void checkImageExtension(String extension) {
         // 허용된 이미지 확장자 검증 (WebP 포함)
-        Set<String> allowedExtensions = Set.of("jpg", "jpeg", "png", "gif", "webp");
+        Set<String> allowedExtensions = Set.of("svg", "jpg", "jpeg", "png", "gif", "webp");
         if (!allowedExtensions.contains(extension)) {
-            throw new IllegalArgumentException("이미지 확장자는 jpg, jpeg, png, gif, webp만 허용됩니다.");
+            throw new IllegalArgumentException("이미지 확장자는 jpg, jpeg, png, svg, gif, webp만 허용됩니다.");
         }
     }
 
