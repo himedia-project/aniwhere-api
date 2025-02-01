@@ -7,6 +7,7 @@ import com.aniwhere.aniwhereapi.domain.product.dto.TagDTO;
 import com.aniwhere.aniwhereapi.domain.product.entity.Product;
 import com.aniwhere.aniwhereapi.domain.product.entity.Tag;
 import com.aniwhere.aniwhereapi.domain.product.repository.ProductRepository;
+import com.aniwhere.aniwhereapi.domain.product.repository.ProductTagRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final ProductTagRepository productTagRepository;
+    private final TagService tagService;
 //    private final AdminProductService adminProductService;
 
 //    @Override
@@ -87,16 +90,15 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     @Override
     public List<TagDTO> tagList(Long id) {
+        Product product = getEntity(id);
+        return productTagRepository.findTagListByProduct(product.getId()).stream()
+                .map(tagService::entityToDTO).toList();
+    }
+
+    private Product getEntity(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 없습니다."));
-        return product.getProductTagList().stream()
-                .map(productTag -> {
-                    Tag tag = productTag.getTag();
-                    return TagDTO.builder()
-                            .id(tag.getId())
-                            .name(tag.getName())
-                            .build();
-                }).collect(Collectors.toList());  // TODO: querydsl 로 변경 + 페치조인 적용
+        return product;
     }
 
 }
