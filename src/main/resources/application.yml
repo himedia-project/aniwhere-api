@@ -24,6 +24,7 @@ spring:
       max-file-size: 10MB # 최대 파일 크기
 
   jpa:
+    open-in-view: false # Open EntityManager in View 패턴 사용 여부
     hibernate:
       ddl-auto: none # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
 #    defer-datasource-initialization: true # DataSource 초기화 지연
