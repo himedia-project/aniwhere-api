@@ -26,8 +26,8 @@ spring:
   jpa:
     open-in-view: false # Open EntityManager in View 패턴 사용 여부
     hibernate:
-      ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
-    defer-datasource-initialization: false # DataSource 초기화 지연
+      ddl-auto: none # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
+#    defer-datasource-initialization: true # DataSource 초기화 지연
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect # Hibernate Dialect 설정
@@ -36,11 +36,11 @@ spring:
         use_sql_comments: true # JPQL SQL 주석 사용
         default_batch_fetch_size: 100 # 기본 배치 크기 설정
 # 🌟 sql init 처리시 사용
-  sql:
-    init:
-      platform: mysql # SQL 초기화 플랫폼 (mysql, h2, postgresql, oracle, sqlserver)
-      data-locations: classpath:sql/data.sql # ddl-auto가 create, create-drop, update일 때 데이터 초기화, 초기화 완료후 validate/none로 변경
-      mode: never # SQL 초기화 모드 (always, never, embedded, embedded-always)
+#  sql:
+#    init:
+#      platform: mysql # SQL 초기화 플랫폼 (mysql, h2, postgresql, oracle, sqlserver)
+#      data-locations: classpath:sql/data.sql # ddl-auto가 create, create-drop, update일 때 데이터 초기화, 초기화 완료후 validate/none로 변경
+#      mode: always # SQL 초기화 모드 (always, never, embedded, embedded-always)
 
 app:
   props:
